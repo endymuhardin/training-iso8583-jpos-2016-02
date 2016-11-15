@@ -1,5 +1,9 @@
 # Training ISO8583 dengan JPos
 
+Berbagai alternatif arsitektur aplikasi menggunakan JPOS
+
+[![JPOS Architecture](materi/img/jpos-architecture.jpg)](https://www.flickr.com/photos/endymuhardin/25360792769/in/dateposted/)
+
 ## Deployment Aplikasi Backend
 
 * URL untuk lihat daftar rekening : https://pelatihan-backend.herokuapp.com/api/rekening/
