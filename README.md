@@ -34,3 +34,22 @@ Contoh data untuk posting topup dari rekening bank lain :
   } 
 ```
 
+## Menjalankan Aplikasi JPos ##
+
+1. Masuk ke folder aplikasi-jpos
+
+        cd aplikasi-jpos
+
+2. Jalankan aplikasi
+
+        mvn clean package exec:java -dexec.mainClass=com.muhardin.endy.belajar.jpos.AplikasiJpos
+
+3. Aplikasi siap menerima koneksi
+
+4. Telnet ke aplikasi untuk mengirim iso message
+
+        telnet localhost 10000
+
+5. Message yang bisa dikirim bisa dicopy paste dari [contoh message](materi/contoh-isomsg.md). Jangan lupa tekan enter setelah paste, supaya message terkirim.
+
+6. Amati log untuk mencari error ataupun mendebug isi message

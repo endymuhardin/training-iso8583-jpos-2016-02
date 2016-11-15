@@ -1,21 +1,3 @@
-# Test ISO Message #
-
-Cara test : 
-
-1. Jalankan Aplikasi Jpos
-
-    mvn clean package exec:java -Dexec.mainClass=com.muhardin.endy.belajar.jpos.AplikasiJpos
-
-2. Telnet ke localhost port 10000
-
-    telnet localhost 10000
-    Trying ::1...
-    Connected to localhost.
-    Escape character is '^]'.
-
-3. Copy paste request message, kemudian tekan enter
-4. Amati log aplikasi
-
 ## Berbagai Contoh Message ##
 
 * Network Management : Echo Request
