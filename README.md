@@ -38,6 +38,37 @@ Contoh data untuk posting topup dari rekening bank lain :
   } 
 ```
 
+## Menjalankan Aplikasi Backend ##
+
+Bila deployment di Heroku di atas tidak bisa dijalankan, kemungkinannya aplikasi sudah saya undeploy dari Heroku. Berikut langkah-langkah untuk menjalankannya di local.
+
+1. Pastikan MySQL, Maven, dan Java sudah terinstall
+
+2. Login ke MySQL sebagai root
+
+        mysql -u root -p
+        Password: <masukkan password bila ada>
+
+3. Buat user database
+
+        grant all on pelatihan.* to pelatihan@localhost identified by '1234'
+
+4. Buat databasenya
+
+        create database pelatihan;
+
+5. Buka command prompt satu lagi, kemudian masuk ke folder aplikasi
+
+        cd aplikasi-backend
+
+6. Jalankan aplikasi
+
+        mvn clean spring-boot:run
+
+7. Setelah aplikasi jalan, pindah ke console MySQL, kemudian insert sample data yang ada di folder `aplikasi-backend/src/test/resources/data`
+
+8. Aplikasi siap dipakai. Silahkan browse ke `http://localhost:8080/api/rekening/` dan URL lain seperti dijelaskan di atas.
+
 ## Menjalankan Aplikasi JPos ##
 
 1. Masuk ke folder aplikasi-jpos
