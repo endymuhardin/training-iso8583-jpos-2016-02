@@ -3,6 +3,7 @@
 ## Deployment Aplikasi Backend
 
 * URL untuk lihat daftar rekening : https://pelatihan-backend.herokuapp.com/api/rekening/
+* URL untuk lihat informasi akun : https://pelatihan-backend.herokuapp.com/api/rekening/001/
 * URL untuk lihat mutasi rekening : https://pelatihan-backend.herokuapp.com/api/rekening/001/mutasi/
 * URL untuk posting mutasi (gunakan method POST) : https://pelatihan-backend.herokuapp.com/api/rekening/001/
 
