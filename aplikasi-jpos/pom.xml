@@ -10,6 +10,14 @@
 
 	<name>aplikasi-jpos</name>
 	<description>ISO 8583 Gateway</description>
+        
+        <dependencies>
+            <dependency>
+                <groupId>org.jpos</groupId>
+                <artifactId>jpos</artifactId>
+                <version>2.0.0</version>
+            </dependency>
+        </dependencies>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
