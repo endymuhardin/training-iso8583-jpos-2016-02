@@ -57,3 +57,15 @@ Contoh data untuk posting topup dari rekening bank lain :
 5. Message yang bisa dikirim bisa dicopy paste dari [contoh message](materi/contoh-isomsg.md). Jangan lupa tekan enter setelah paste, supaya message terkirim.
 
 6. Amati log untuk mencari error ataupun mendebug isi message
+
+## Penggunaan HSM ##
+
+HSM (Hardware Security Module) adalah perangkat untuk menjalankan fungsi enkripsi data. Biasanya HSM digunakan untuk :
+
+* Generate PIN dan mencetak PIN Mailer
+* Memproses setup PIN dengan PIN pad
+* Generate key untuk terminal (ATM/EDC)
+* Verifikasi PIN
+* Translate (decrypt dengan key A, encrypt ulang dengan key B) PIN bila terjadi perpindahan zone
+
+Berbagai skenario penggunaan HSM bisa dibaca [di sini](materi/hsm.md)

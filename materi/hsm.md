@@ -5,12 +5,16 @@
 * Semua key lain digenerate oleh HSM, kemudian diencrypt dengan LMK, baru diberikan ke kita. Key yang terencrypt dengan LMK ini yang kita simpan di database.
 * Fitur terpenting HSM adalah anti-tampering. Dia bisa menghapus LMKnya bila terjadi pembongkaran paksa, sehingga LMK kita bisa disimpan dengan aman.
 
-Beberapa istilah dalam penggunaan HSM:
+Beberapa istilah dalam penggunaan HSM :
 
 * LMK : Local Master Key. Key utama yang digunakan untuk mengenkripsi key lain
 * TMK : Terminal Master Key. Key di terminal (ATM atau EDC) yang digunakan untuk mengenkripsi key transaksi
 * TPK : Terminal Pin Key. Key yang digunakan untuk mengenkripsi data transaksi (misalnya PIN nasabah)
 
+Referensi :
+
+* [HSM Basic](http://web.archive.org/web/20130405032855/http://jpos.org/wiki/HSM_basics)
+* [HSM More](http://web.archive.org/web/20121225184341/http://jpos.org/wiki/HSM_basics_continued)
 
 ## Inisialisasi LMK ##
 
@@ -38,4 +42,4 @@ Secara periodik, TPK di masing-masing terminal diganti baru untuk menghindari re
 
 ## Prosedur PIN Translation bila bertransaksi di ATM yang berbeda dengan penerbit kartu ##
 
-[![PIN Translation](img/pintranslation.jpg)]()
+[![PIN Translation](img/pintranslation.jpg)](https://www.flickr.com/photos/endymuhardin/30694924240/in/dateposted/)
