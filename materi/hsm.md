@@ -24,4 +24,10 @@ Secara periodik, TPK di masing-masing terminal diganti baru untuk menghindari re
 
 [![Key Change](img/keychange.jpg)](https://www.flickr.com/photos/endymuhardin/30908461751/in/dateposted/)
 
-<a data-flickr-embed="true"  href="https://www.flickr.com/photos/endymuhardin/30908461751/in/dateposted/" title="IMG_0671"><img src="https://c8.staticflickr.com/6/5605/30908461751_95d41626b4_k.jpg" width="2048" height="1365" alt="IMG_0671"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+## Prosedur Pencetakan PIN ATM (PIN Mailer) ##
+
+[![Pin Mailer](img/pinmailer.jpg)](https://www.flickr.com/photos/endymuhardin/30879967322/in/dateposted/)
+
+## Prosedur Ganti PIN dengan PIN Pad ##
+
+[![Pin Pad](img/pinpad.jpg)](https://www.flickr.com/photos/endymuhardin/30908490491/in/dateposted/)
