@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -30,18 +29,24 @@ public class BackendApiController {
         return rekeningDao.findAll(page);
     }
     
-    @RequestMapping("/rekening/{id}/mutasi/")
-    public Page<Mutasi> mutasiRekening(@PathVariable("id") Rekening r, Pageable page){
-        return mutasiDao.findByRekening(r, page);
+    @RequestMapping("/rekening/{nomor}/")
+    public Rekening semuaRekening(@PathVariable String nomor){
+        return rekeningDao.findByNomor(nomor);
     }
     
-    @RequestMapping(value = "/rekening/{id}/", method = RequestMethod.POST)
+    @RequestMapping("/rekening/{nomor}/mutasi/")
+    public Page<Mutasi> mutasiRekening(@PathVariable("nomor") String nomor, Pageable page){
+        return mutasiDao.findByRekening(rekeningDao.findByNomor(nomor), page);
+    }
+    
+    @RequestMapping(value = "/rekening/{nomor}/", method = RequestMethod.POST)
     @Transactional
-    public ResponseEntity<String> tambahMutasi(@RequestBody @Valid Mutasi m, @PathVariable("id") Rekening r){
-        m.setId(null);
+    public ResponseEntity<String> tambahMutasi(@RequestBody @Valid Mutasi m, @PathVariable("nomor") String nomor){
+        Rekening r = rekeningDao.findByNomor(nomor);
         if(r == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Rekening Invalid");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nomor Rekening tidak valid");
         }
+        m.setId(null);
         r.setSaldo(r.getSaldo().add(m.getNilai()));
         rekeningDao.save(r);
         mutasiDao.save(m);
