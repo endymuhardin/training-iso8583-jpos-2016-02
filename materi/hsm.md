@@ -31,3 +31,11 @@ Secara periodik, TPK di masing-masing terminal diganti baru untuk menghindari re
 ## Prosedur Ganti PIN dengan PIN Pad ##
 
 [![Pin Pad](img/pinpad.jpg)](https://www.flickr.com/photos/endymuhardin/30908490491/in/dateposted/)
+
+## Prosedur Verifikasi PIN dengan HSM pada waktu Tarik Tunai di ATM ##
+
+[![PIN Verification](img/pinverification.jpg)](https://www.flickr.com/photos/endymuhardin/25360867809/in/dateposted/)
+
+## Prosedur PIN Translation bila bertransaksi di ATM yang berbeda dengan penerbit kartu ##
+
+[![PIN Translation](img/pintranslation.jpg)]()
