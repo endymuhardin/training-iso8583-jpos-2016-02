@@ -46,7 +46,7 @@ Contoh data untuk posting topup dari rekening bank lain :
 
 2. Jalankan aplikasi
 
-        mvn clean package exec:java -dexec.mainClass=com.muhardin.endy.belajar.jpos.AplikasiJpos
+        mvn clean package exec:java -Dexec.mainClass=com.muhardin.endy.belajar.jpos.AplikasiJpos
 
 3. Aplikasi siap menerima koneksi
 
