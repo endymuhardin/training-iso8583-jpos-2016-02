@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,11 +36,14 @@ public class BackendApiController {
     }
     
     @RequestMapping(value = "/rekening/{id}/", method = RequestMethod.POST)
+    @Transactional
     public ResponseEntity<String> tambahMutasi(@RequestBody @Valid Mutasi m, @PathVariable("id") Rekening r){
         m.setId(null);
         if(r == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Rekening Invalid");
         }
+        r.setSaldo(r.getSaldo().add(m.getNilai()));
+        rekeningDao.save(r);
         mutasiDao.save(m);
         return ResponseEntity.status(HttpStatus.CREATED).body("OK");
     }
