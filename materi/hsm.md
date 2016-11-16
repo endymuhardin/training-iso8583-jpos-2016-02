@@ -28,6 +28,29 @@ Secara periodik, TPK di masing-masing terminal diganti baru untuk menghindari re
 
 [![Key Change](img/keychange.jpg)](https://www.flickr.com/photos/endymuhardin/30908461751/in/dateposted/)
 
+## Catatan tentang PIN ##
+
+Di bawah ini akan ada beberapa gambar prosedur pemrosesan transaksi keuangan menggunakan PIN (Personal Identification Number). Penulisan PIN pada diagram di bawah sangat disederhanakan menjadi `[PIN]LMK` atau PIN yang dienkripsi dengan LMK.
+
+Akan tetapi, prosedur aslinya tidak sesederhana itu. Ada beberapa perhitungan lagi yang melibatkan beberapa komponen PIN seperti :
+
+* PAN : Primary Account Number, atau gampangnya adalah nomer kartu debit/kredit
+* PIN asli. Yaitu nomer rahasia yang dipilih pemegang kartu debit/kredit
+* PIN Generation/Verification Key : key yang digunakan untuk proses generate PIN
+* PIN natural. Yaitu nilai yang dihasilkan dari mengenkripsi sebagian PAN dengan PIN Generation Key
+* PIN Offset : selisih antara PIN asli dengan PIN natural. PIN Offset inilah yang disimpan di database aplikasi
+* PIN block. Yaitu gabungan antara PIN dan nomer kartu (PAN). Ini adalah nilai yang dikirim oleh ATM/EDC ke server.
+
+Berikut adalah beberapa referensi tentang prosedur perhitungan dan pemrosesan PIN :
+
+* [Penjelasan alur pemrosesan PIN](http://web.archive.org/web/20160120101716/http://sidekick.windforwings.com/2008/02/how-are-atm-pins-validated.html)
+* [Algoritma perhitungan PIN offset](http://www.ibm.com/support/knowledgecenter/en/linuxonibm/com.ibm.linux.z.wskc.doc/wskc_c_appdpinoffgenalg.html)
+* [Algoritma perhitungan PIN block](http://www.ibm.com/support/knowledgecenter/SSLTBW_2.2.0/com.ibm.zos.v2r2.csfb400/pinbf.htm)
+* [Panduan keamanan PIN](https://usa.visa.com/dam/VCOM/download/merchants/visa-issuer-pin-security-guideline.pdf)
+
+
+Jadi, kalau pada diagram di bawah ada tulisan `[PIN]LMK`, jangan dibaca __PIN dienkripsi dengan LMK__, tapi bacalah __PIN diproses oleh HSM__.
+
 ## Prosedur Pencetakan PIN ATM (PIN Mailer) ##
 
 [![Pin Mailer](img/pinmailer.jpg)](https://www.flickr.com/photos/endymuhardin/30879967322/in/dateposted/)
