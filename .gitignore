@@ -16,3 +16,4 @@ hs_err_pid*
 # log folder
 log
 logs
+/aplikasi-simulator/target/
