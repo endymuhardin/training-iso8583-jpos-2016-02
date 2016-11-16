@@ -169,30 +169,24 @@ public class BackendApiController {
     private String isoRequest(String message) throws Exception {
         String length = String.format("%4s", message.length()).replace(' ', '0');
         
-        Socket clientSocket = new Socket(host, port);
-        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-        
-        System.out.println("Sending : "+length+message);
-        
-        out.println(length + message);
-        
-        char[] responseLengthChar = new char[4];
-        in.read(responseLengthChar);
-        
-        String responseLengthStr = new String(responseLengthChar);
-        System.out.println("Response length : "+responseLengthStr);
-        
-        Integer responseLength = Integer.valueOf(responseLengthStr);
-        char[] responseDataChar = new char[responseLength];
-        in.read(responseDataChar);
-        String responseData = new String(responseDataChar);
-        
-        System.out.println("Response Data : "+responseData);
-        
-        out.close();
-        in.close();
-        clientSocket.close();
+        String responseData;
+        try (Socket clientSocket = new Socket(host, port)) {
+            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            System.out.println("Sending : "+length+message);
+            out.println(length + message);
+            char[] responseLengthChar = new char[4];
+            in.read(responseLengthChar);
+            String responseLengthStr = new String(responseLengthChar);
+            System.out.println("Response length : "+responseLengthStr);
+            Integer responseLength = Integer.valueOf(responseLengthStr);
+            char[] responseDataChar = new char[responseLength];
+            in.read(responseDataChar);
+            responseData = new String(responseDataChar);
+            System.out.println("Response Data : "+responseData);
+            out.close();
+            in.close();
+        }
         
         return responseData;
     }
