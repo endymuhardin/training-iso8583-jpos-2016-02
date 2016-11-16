@@ -171,9 +171,10 @@ public class BackendApiController {
                 
                 r.setSaldo(r.getSaldo().add(m.getNilai()));
                 rekeningDao.save(r);
+                return ResponseEntity.status(HttpStatus.OK).body("Transfer ke rekening "+tujuan+" a.n "+nama+". Saldo efektif : "+r.getSaldo());
             }
             
-            return ResponseEntity.status(HttpStatus.OK).body(response);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Response code : "+responseCode);
         } catch (Exception err){
             err.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(err.getMessage());
