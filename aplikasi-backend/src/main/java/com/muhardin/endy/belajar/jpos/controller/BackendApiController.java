@@ -102,7 +102,7 @@ public class BackendApiController {
             String response = isoRequest(isomsg.toString());
             
             // todo : parse dulu bit 39, handle errornya
-            String responseCode = response.substring(100,102);
+            String responseCode = response.substring(99,101);
             System.out.println("Response code : "+responseCode);
             
             String nama = response.substring(108);
