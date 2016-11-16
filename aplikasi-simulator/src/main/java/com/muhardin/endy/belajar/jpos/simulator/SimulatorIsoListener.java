@@ -19,14 +19,24 @@ public class SimulatorIsoListener implements ISORequestListener{
             // handle account inquiry
             if(processingCode.startsWith("34")) {
                 response.set(104, "Dummy Account");
-                response.set(39, "00");
+                
+                String rekeningTujuan = request.getString(103);
+                if("123".equals(rekeningTujuan)) {  // happy scenario
+                    response.set(39, "00");
+                } else if ("456".equals(rekeningTujuan)) {  // invalid account
+                    response.set(39, "14");
+                } else if ("789".equals(rekeningTujuan)) {  // late response
+                    Thread.sleep(40 * 1000);
+                    response.set(39, "00");
+                } else {
+                    response.set(39, "99");  // error lain-lain
+                }
             }
             
             // handle transfer
             if(processingCode.startsWith("41")) {
                 String rekeningTujuan = request.getString(103);
                 
-                // todo : lengkapi dengan berbagai skenario
                 if("123".equals(rekeningTujuan)) {  // happy scenario
                     response.set(39, "00");
                 } else if ("456".equals(rekeningTujuan)) {  // invalid account
