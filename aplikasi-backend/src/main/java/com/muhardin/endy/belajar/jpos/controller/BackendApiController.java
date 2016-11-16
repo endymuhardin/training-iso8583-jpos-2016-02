@@ -47,6 +47,7 @@ public class BackendApiController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nomor Rekening tidak valid");
         }
         m.setId(null);
+        m.setRekening(r);
         r.setSaldo(r.getSaldo().add(m.getNilai()));
         rekeningDao.save(r);
         mutasiDao.save(m);
