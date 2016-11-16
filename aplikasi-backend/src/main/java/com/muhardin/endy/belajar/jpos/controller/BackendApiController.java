@@ -114,6 +114,7 @@ public class BackendApiController {
     }
     
     @RequestMapping(value = "/rekening/{nomor}/transfer/", method = RequestMethod.POST)
+    @Transactional
     public ResponseEntity<String> transfer(@PathVariable("nomor") Rekening r, 
             @RequestParam("tujuan") String tujuan, 
             @RequestParam("nilai") BigDecimal nilai){
@@ -121,6 +122,8 @@ public class BackendApiController {
         if(r == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nomor Rekening tidak valid");
         }
+        
+        // todo : cek saldo dulu, kalau tidak cukup jangan dilanjutkan
         
         LocalDateTime sekarang = LocalDateTime.now();
         
@@ -155,6 +158,21 @@ public class BackendApiController {
             String response = isoRequest(isomsg.toString());
             String responseCode = response.substring(111, 113);
             System.out.println("Response Code : "+responseCode);
+            
+            if("00".equalsIgnoreCase(responseCode)) {
+                String nama = response.substring(125);
+                System.out.println("Nama rekening tujuan : "+nama);
+                Mutasi m = new Mutasi();
+                m.setRekening(r);
+                m.setNilai(nilai.negate());
+                m.setWaktuTransaksi(LocalDateTime.now());
+                m.setKeterangan("Transfer ke rekening "+tujuan+" a.n "+nama);
+                mutasiDao.save(m);
+                
+                r.setSaldo(r.getSaldo().add(m.getNilai()));
+                rekeningDao.save(r);
+            }
+            
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception err){
             err.printStackTrace();

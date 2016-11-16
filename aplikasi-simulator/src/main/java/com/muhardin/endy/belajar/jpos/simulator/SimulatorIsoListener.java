@@ -35,8 +35,9 @@ public class SimulatorIsoListener implements ISORequestListener{
             
             // handle transfer
             if(processingCode.startsWith("41")) {
-                String rekeningTujuan = request.getString(103);
+                response.set(104, "Dummy Account");
                 
+                String rekeningTujuan = request.getString(103);
                 if("123".equals(rekeningTujuan)) {  // happy scenario
                     response.set(39, "00");
                 } else if ("456".equals(rekeningTujuan)) {  // invalid account
