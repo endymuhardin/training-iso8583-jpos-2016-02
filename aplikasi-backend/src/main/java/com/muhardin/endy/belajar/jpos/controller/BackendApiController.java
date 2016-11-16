@@ -4,8 +4,16 @@ import com.muhardin.endy.belajar.jpos.dao.MutasiDao;
 import com.muhardin.endy.belajar.jpos.dao.RekeningDao;
 import com.muhardin.endy.belajar.jpos.entity.Mutasi;
 import com.muhardin.endy.belajar.jpos.entity.Rekening;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Random;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -15,14 +23,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
 public class BackendApiController {
     
+    private static final String DATE_FORMAT_BIT_7 = "MMddHHmmss";
+    private static final String DATE_FORMAT_BIT_12 = "HHmmss";
+    private static final String DATE_FORMAT_BIT_13 = "MMdd";
+    
     @Autowired private RekeningDao rekeningDao;
     @Autowired private MutasiDao mutasiDao;
+    
+    @Value("${isoserver.host}") String host;
+    @Value("${isoserver.port}") Integer port;
     
     @RequestMapping("/rekening/")
     public Page<Rekening> semuaRekening(Pageable page){
@@ -52,5 +68,82 @@ public class BackendApiController {
         rekeningDao.save(r);
         mutasiDao.save(m);
         return ResponseEntity.status(HttpStatus.CREATED).body("OK");
+    }
+    
+    @RequestMapping(value = "/rekening/{nomor}/inquiry/", method = RequestMethod.POST)
+    public ResponseEntity<String> inquiry(@PathVariable("nomor") Rekening r, @RequestParam("tujuan") String tujuan){
+        if(r == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nomor Rekening tidak valid");
+        }
+        
+        LocalDateTime sekarang = LocalDateTime.now();
+        
+        String bit7 = sekarang.format(DateTimeFormatter.ofPattern(DATE_FORMAT_BIT_7));
+        String bit12 = sekarang.format(DateTimeFormatter.ofPattern(DATE_FORMAT_BIT_12));
+        String bit13 = sekarang.format(DateTimeFormatter.ofPattern(DATE_FORMAT_BIT_13));
+        
+        String bit11 = String.format("%6s", generateStan()).replace(' ', '0');
+        String lengthRekeningTujuan = String.format("%2s", tujuan.length()).replace(' ', '0');
+        
+        StringBuilder isomsg = new StringBuilder("0200E23A400A00000000000000000200000003001341000");
+        isomsg.append(bit7);
+        isomsg.append(bit11);
+        isomsg.append(bit12);
+        isomsg.append(bit13);
+        isomsg.append(bit13);
+        isomsg.append("6012C00000000C00000000");
+        isomsg.append(lengthRekeningTujuan);
+        isomsg.append(tujuan);
+        
+        System.out.println("ISO MSG Inquiry Request : "+isomsg);
+        
+        try {
+            String response = isoRequest(isomsg.toString());
+            
+            // todo : parse dulu bit 39, handle errornya
+            String responseCode = response.substring(100,102);
+            System.out.println("Response code : "+responseCode);
+            
+            String nama = response.substring(108);
+            return ResponseEntity.status(HttpStatus.OK).body("Nama : "+nama);
+        } catch (Exception err){
+            err.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(err.getMessage());
+        }
+    }
+    
+    private Integer generateStan(){
+        return new Random().nextInt(999999);
+    }
+    
+    private String isoRequest(String message) throws Exception {
+        String length = String.format("%4s", message.length()).replace(' ', '0');
+        
+        Socket clientSocket = new Socket(host, port);
+        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+        
+        System.out.println("Sending : "+length+message);
+        
+        out.println(length + message);
+        
+        char[] responseLengthChar = new char[4];
+        in.read(responseLengthChar);
+        
+        String responseLengthStr = new String(responseLengthChar);
+        System.out.println("Response length : "+responseLengthStr);
+        
+        Integer responseLength = Integer.valueOf(responseLengthStr);
+        char[] responseDataChar = new char[responseLength];
+        in.read(responseDataChar);
+        String responseData = new String(responseDataChar);
+        
+        System.out.println("Response Data : "+responseData);
+        
+        out.close();
+        in.close();
+        clientSocket.close();
+        
+        return responseData;
     }
 }

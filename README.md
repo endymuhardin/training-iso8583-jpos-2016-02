@@ -69,6 +69,17 @@ Bila deployment di Heroku di atas tidak bisa dijalankan, kemungkinannya aplikasi
 
 8. Aplikasi siap dipakai. Silahkan browse ke `http://localhost:8080/api/rekening/` dan URL lain seperti dijelaskan di atas.
 
+
+Untuk mengetes aplikasi backend sebagai client, berikut langkah-langkahnya :
+
+1. Jalankan dulu aplikasi-simulator
+
+2. Jalankan aplikasi-backend
+
+3. Account Inquiry : HTTP POST ke `http://localhost:8080/api/rekening/001/inquiry/?tujuan=123`
+
+4. Amati Log
+
 ## Menjalankan Aplikasi JPos ##
 
 1. Masuk ke folder aplikasi-jpos

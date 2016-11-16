@@ -18,7 +18,7 @@ public class PackagerTests {
         msg.set(18, "6012");
         msg.set(29, "C00000000");
         msg.set(31, "C00000000");
-        msg.set(102, "001");
+        msg.set(103, "001");
         
         msg.setPackager(new GenericPackager("cfg/altopackager.xml"));
         String msgString = new String(msg.pack());
