@@ -7,6 +7,7 @@ import com.muhardin.endy.belajar.jpos.entity.Rekening;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -106,6 +107,55 @@ public class BackendApiController {
             
             String nama = response.substring(108);
             return ResponseEntity.status(HttpStatus.OK).body("Nama : "+nama);
+        } catch (Exception err){
+            err.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(err.getMessage());
+        }
+    }
+    
+    @RequestMapping(value = "/rekening/{nomor}/transfer/", method = RequestMethod.POST)
+    public ResponseEntity<String> transfer(@PathVariable("nomor") Rekening r, 
+            @RequestParam("tujuan") String tujuan, 
+            @RequestParam("nilai") BigDecimal nilai){
+     
+        if(r == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nomor Rekening tidak valid");
+        }
+        
+        LocalDateTime sekarang = LocalDateTime.now();
+        
+        String bit4 = String.format("%12s", nilai.toString()).replace(' ', '0');
+        
+        String bit7 = sekarang.format(DateTimeFormatter.ofPattern(DATE_FORMAT_BIT_7));
+        String bit12 = sekarang.format(DateTimeFormatter.ofPattern(DATE_FORMAT_BIT_12));
+        String bit13 = sekarang.format(DateTimeFormatter.ofPattern(DATE_FORMAT_BIT_13));
+        
+        String bit11 = String.format("%6s", generateStan()).replace(' ', '0');
+        
+        String lengthRekeningAsal = String.format("%2s", r.getNomor().length()).replace(' ', '0');
+        String lengthRekeningTujuan = String.format("%2s", tujuan.length()).replace(' ', '0');
+        
+        StringBuilder isomsg = new StringBuilder("0200F23A400A00000000000000000600000003001411000");
+        isomsg.append(bit4);
+        isomsg.append(bit7);
+        isomsg.append(bit11);
+        isomsg.append(bit12);
+        isomsg.append(bit13);
+        isomsg.append(bit13);
+        isomsg.append("6012C00000000C00000000");
+        
+        isomsg.append(lengthRekeningAsal);
+        isomsg.append(r.getNomor());
+        isomsg.append(lengthRekeningTujuan);
+        isomsg.append(tujuan);
+        
+        System.out.println("ISO MSG Transfer Request : "+isomsg);
+        
+        try {
+            String response = isoRequest(isomsg.toString());
+            String responseCode = response.substring(111, 113);
+            System.out.println("Response Code : "+responseCode);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception err){
             err.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(err.getMessage());
